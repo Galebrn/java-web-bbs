@@ -13,6 +13,18 @@
                 #{userIfUsed}, #{countOfFollow}, #{countOfBeFollow}, #{countOfPrivatePosts}, #{countOfPosts},
                 #{countOfComments})
     </insert>
+    <update id="removeUserById">
+        update `user`
+        set user_if_used = #{ifUsed},
+            update_time  = now()
+        where user_id = #{id}
+    </update>
+    <update id="removeUserByName">
+        update `user`
+        set user_if_used = #{ifUsed},
+            update_time  = now()
+        where user_name = #{name}
+    </update>
     <delete id="deleteUserById">
         delete
         from `user`

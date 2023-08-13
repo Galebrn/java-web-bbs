@@ -1,2 +1,7 @@
-package com.studio2h.javawebbbs.service.impl;public class UserServiceImpl {
+package com.studio2h.javawebbbs.service.impl;
+
+/**
+ * @author Galebrn
+ */
+public class UserServiceImpl {
 }

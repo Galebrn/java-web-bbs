@@ -4,6 +4,8 @@ import com.studio2h.javawebbbs.pojo.user.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 
+import java.util.List;
+
 /**
  * @author Galebrn
  */
@@ -62,4 +64,56 @@ public interface UserMapper {
      * @param ifUsed 用户是否启用
      */
     void removeUserByName(String name, boolean ifUsed);
+
+    /**
+     * 根据userId更新用户数据
+     *
+     * @param newUser 新的用户实例
+     */
+    void updateUserById(User newUser);
+
+    /**
+     * 根据name更新用户数据
+     *
+     * @param newUser 新的用户实例
+     * @param name    用户名称
+     */
+    void updateUserByName(User newUser, String name);
+
+    /**
+     * 获取数据库中用户总数
+     *
+     * @return 用户总数
+     */
+    Integer countUsers();
+
+    /**
+     * 获取数据库中启用的用户总数
+     *
+     * @return 启用的用户总数
+     */
+    Integer countUsedUsers();
+
+    /**
+     * 查询所有启用的用户数据
+     *
+     * @return 启用的用户列表
+     */
+    List<User> listAllUsedUsers();
+
+    /**
+     * 查询所有用户数据
+     *
+     * @return 总用户列表
+     */
+    List<User> listAllUsers();
+
+    /**
+     * 查询是否存在用户，userEmail = email
+     *
+     * @param email 邮箱
+     * @return 满足条件的用户信息
+     */
+    User getByEmail(String email);
+
 }

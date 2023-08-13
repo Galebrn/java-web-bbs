@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studio2h.javawebbbs.mapper.UserMapper">
+    <insert id="insertUser">
+        insert into `user` (user_name, user_password, user_avatar_path, user_sex, user_birthday, user_signature,
+                            user_exp, user_level, user_email, user_phone_number, user_if_op, create_time, update_time,
+                            user_if_used, count_of_follow, count_of_be_follow, count_of_private_posts, count_of_posts,
+                            count_of_comments)
+        values (#{userName}, #{userPassword}, #{userAvatarPath}, #{userSex}, #{userBirthday}, #{userSignature},
+                #{userExp}, #{userLevel}, #{userEmail}, #{userPhoneNumber}, #{userIfOp}, #{createTime}, #{updateTime},
+                #{userIfUsed}, #{countOfFollow}, #{countOfBeFollow}, #{countOfPrivatePosts}, #{countOfPosts},
+                #{countOfComments})
+    </insert>
+    <delete id="deleteUserById">
+        delete
+        from `user`
+        where user_id = #{id}
+    </delete>
+    <delete id="deleteUserByName">
+        delete
+        from `user`
+        where user_name = #{name}
+    </delete>
+    <select id="getUserById">
+        select user_id,
+               user_name,
+               user_password,
+               user_avatar_path,
+               user_sex,
+               user_birthday,
+               user_signature,
+               user_exp,
+               user_level,
+               user_email,
+               user_phone_number,
+               user_if_op,
+               create_time,
+               update_time,
+               user_if_used,
+               count_of_follow,
+               count_of_be_follow,
+               count_of_private_posts,
+               count_of_posts,
+               count_of_comments
+        from `user`
+        where user_id = #{id}
+    </select>
+    <select id="getUserByName">
+        select user_id,
+               user_name,
+               user_password,
+               user_avatar_path,
+               user_sex,
+               user_birthday,
+               user_signature,
+               user_exp,
+               user_level,
+               user_email,
+               user_phone_number,
+               user_if_op,
+               create_time,
+               update_time,
+               user_if_used,
+               count_of_follow,
+               count_of_be_follow,
+               count_of_private_posts,
+               count_of_posts,
+               count_of_comments
+        from `user`
+        where user_name = #{name}
+    </select>
+</mapper>

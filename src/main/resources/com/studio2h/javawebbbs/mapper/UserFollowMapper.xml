@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studio2h.javawebbbs.mapper.UserFollowMapper">
+    <insert id="insertNewFollower">
+        insert into user_follow (user_id, followed_user_id)
+        VALUES (#{id}, #{followedId})
+    </insert>
+    <delete id="deleteFollower">
+        delete
+        from user_follow
+        where user_id = #{id}
+          and followed_user_id = #{followedId)}
+    </delete>
+    <select id="listById" resultType="com.studio2h.javawebbbs.pojo.user.UserFollow">
+        select user_id, followed_user_id
+        from user_follow
+        where user_id = #{id}
+    </select>
+    <select id="listFollowedId" resultType="java.lang.Integer">
+        select followed_user_id
+        from user_follow
+        where user_id = #{id}
+    </select>
+    <select id="listBeFollowedId" resultType="java.lang.Integer">
+        select user_id
+        from user_follow
+        where followed_user_id = #{id}
+    </select>
+    <select id="list" resultType="com.studio2h.javawebbbs.pojo.user.UserFollow">
+        select user_id, followed_user_id
+        from user_follow
+    </select>
+</mapper>

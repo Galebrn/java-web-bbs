@@ -2,7 +2,7 @@ package com.studio2h.javawebbbs.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.studio2h.javawebbbs.pojo.result.Result;
-import com.studio2h.javawebbbs.util.JwtUtil;
+import com.studio2h.javawebbbs.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         try {
-            JwtUtil.parseJwt(jwtToken);
+            JwtUtils.parseJwt(jwtToken);
+
         } catch (Exception e) {
             e.printStackTrace();
             log.info("令牌解析失败");

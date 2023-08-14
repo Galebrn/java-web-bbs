@@ -116,4 +116,5 @@ public interface UserMapper {
      */
     User getByEmail(String email);
 
+    User getByNameAndPassword(String name,String password);
 }

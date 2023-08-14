@@ -277,4 +277,29 @@
         from `user`
         where user_email = #{email}
     </select>
+    <select id="getByNameAndPassword" resultType="com.studio2h.javawebbbs.pojo.user.User">
+        select user_id,
+               user_name,
+               user_password,
+               user_avatar_path,
+               user_sex,
+               user_birthday,
+               user_signature,
+               user_exp,
+               user_level,
+               user_email,
+               user_phone_number,
+               user_if_op,
+               create_time,
+               update_time,
+               user_if_used,
+               count_of_follow,
+               count_of_be_follow,
+               count_of_private_posts,
+               count_of_posts,
+               count_of_comments
+        from `user`
+        where user_name = #{name}
+          and user_password = #{password}
+    </select>
 </mapper>

@@ -18,22 +18,22 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
-    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String url = req.getRequestURL().toString();
-        log.info("请求的url: {}",url);
+        String url = request.getRequestURL().toString();
+        log.info("请求的url: {}", url);
 
-        if(url.contains("login")) {
+        if (url.contains("login")) {
             return true;
         }
 
-        String jwtToken = req.getHeader("token");
+        String jwtToken = request.getHeader("token");
 
-        if(!StringUtils.hasLength(jwtToken)){
+        if (!StringUtils.hasLength(jwtToken)) {
             log.info("token为空");
             Result error = Result.error("NOT_LOGIN");
             String notLogin = JSONObject.toJSONString(error);
-            resp.getWriter().write(notLogin);
+            response.getWriter().write(notLogin);
             return false;
         }
 
@@ -44,7 +44,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             log.info("令牌解析失败");
             Result error = Result.error("NOT_LOGIN");
             String notLogin = JSONObject.toJSONString(error);
-            resp.getWriter().write(notLogin);
+            response.getWriter().write(notLogin);
             return false;
         }
 
@@ -53,12 +53,12 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest req, HttpServletResponse resp, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         System.out.println("postHandle ...");
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         System.out.println("afterHandle ...");
     }
 }

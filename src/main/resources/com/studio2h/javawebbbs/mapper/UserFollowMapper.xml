@@ -5,13 +5,13 @@
 <mapper namespace="com.studio2h.javawebbbs.mapper.UserFollowMapper">
     <insert id="insertNewFollower">
         insert into user_follow (user_id, followed_user_id)
-        VALUES (#{id}, #{followedId})
+        values (#{userId}, #{followedUserId})
     </insert>
     <delete id="deleteFollower">
         delete
         from user_follow
-        where user_id = #{id}
-          and followed_user_id = #{followedId)}
+        where user_id = #{userId}
+          and followed_user_id = #{followedUserId}
     </delete>
     <select id="listById" resultType="com.studio2h.javawebbbs.pojo.user.UserFollow">
         select user_id, followed_user_id

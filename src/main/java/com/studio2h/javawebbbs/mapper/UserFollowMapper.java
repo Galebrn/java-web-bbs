@@ -44,16 +44,14 @@ public interface UserFollowMapper {
     /**
      * 新增关注项
      *
-     * @param id         关注者id
-     * @param followedId 被关注者id
+     * @param userFollow 关注项
      */
-    void insertNewFollower(Integer id, Integer followedId);
+    void insertNewFollower(UserFollow userFollow);
 
     /**
      * 删除关注项
      *
-     * @param id         关注者id
-     * @param followedId 被关注者id
+     * @param userFollow 关注项
      */
-    void deleteFollower(Integer id, Integer followedId);
+    void deleteFollower(UserFollow userFollow);
 }

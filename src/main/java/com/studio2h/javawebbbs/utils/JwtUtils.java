@@ -4,9 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Map;
@@ -20,7 +18,7 @@ public class JwtUtils {
 
     public static String generateJwt(Map<String, Object> claims) {
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256,SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .compact();
@@ -37,10 +35,19 @@ public class JwtUtils {
 
     private static String generateRandomKey() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[] keyBytes = new byte[32];
+        StringBuilder keyStringBuilder = new StringBuilder();
 
-        secureRandom.nextBytes(keyBytes);
+        while (keyStringBuilder.length() < 64) {
+            int randomInt = secureRandom.nextInt(52);
+            char randomChar;
+            if (randomInt < 26) {
+                randomChar = (char) (randomInt + 'a');
+            } else {
+                randomChar = (char) (randomInt - 26 + 'A');
+            }
+            keyStringBuilder.append(randomChar);
+        }
 
-        return java.util.Base64.getUrlEncoder().encodeToString(keyBytes);
+        return keyStringBuilder.toString();
     }
 }

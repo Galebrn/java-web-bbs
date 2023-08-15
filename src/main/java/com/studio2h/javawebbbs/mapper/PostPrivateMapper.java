@@ -1,12 +1,14 @@
 package com.studio2h.javawebbbs.mapper;
 
 import com.studio2h.javawebbbs.pojo.post.PostPrivate;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * @author Galebrn
  */
+@Mapper
 public interface PostPrivateMapper {
     /**
      * 列出userId为id的用户的收藏帖子表

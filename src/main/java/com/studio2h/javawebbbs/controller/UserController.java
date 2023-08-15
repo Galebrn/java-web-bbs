@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -89,5 +91,67 @@ public class UserController {
         User user = userService.getUserById(userId);
 
         return Result.success(user);
+    }
+
+    @PutMapping("/{userId}/editor")
+    public Result updateUserInfo(@PathVariable Integer userId, @RequestBody User newUser) {
+
+        String regexOfPhoneNum = "^\\d{11}$";
+        String regexOfEmail = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
+        /*
+          判断用户名是否存在
+         */
+        String userName = newUser.getUserName();
+        if ((userService.getUserByName(userName) != null)
+                && (!userService.getUserById(userId).getUserName().equals(userName))) {
+            return Result.error("该用户名: " + userName + " 已被使用");
+        }
+
+        String email = newUser.getUserEmail();
+        String phoneNum = newUser.getUserPhoneNumber();
+
+        /*
+          判断电话号码格式
+         */
+        if (phoneNum!=null) {
+            Pattern pattern = Pattern.compile(regexOfPhoneNum);
+            Matcher matcher = pattern.matcher(phoneNum);
+            if (!matcher.matches()) {
+                return Result.error("该电话号码格式不合法");
+            }
+            if (userService.getUserByPhoneNum(phoneNum)!=null) {
+                return Result.error("该电话号码: " + phoneNum + " 已被使用");
+            }
+        }
+
+        /*
+          判断邮箱格式
+         */
+        if (email!=null) {
+            Pattern pattern = Pattern.compile(regexOfEmail);
+            Matcher matcher = pattern.matcher(email);
+            if (!matcher.matches()) {
+                return Result.error("该邮箱格式不合法");
+            }
+            if (userService.getUserByEmail(email)!=null) {
+                return Result.error("该电子邮箱: " + email + " 已被使用");
+            }
+        }
+
+        userService.updateUser(newUser);
+        return Result.success();
+    }
+
+    @PutMapping("/{userId}/follow/editor")
+    public Result updateUserFollow(@PathVariable Integer userId) {
+
+        return Result.success();
+    }
+
+    @PutMapping("/{userId}/private/editor")
+    public Result updateUserPrivate(@PathVariable Integer userId) {
+
+        return Result.success();
     }
 }

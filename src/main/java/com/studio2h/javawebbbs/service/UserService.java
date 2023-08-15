@@ -23,4 +23,10 @@ public interface UserService {
     User getUserByName(String name);
 
     void registerNewUser(UserRegisterRequest userRegisterRequest);
+
+    User getUserByPhoneNum(String phoneNum);
+
+    User getUserByEmail(String email);
+
+    void updateUser(User newUser);
 }

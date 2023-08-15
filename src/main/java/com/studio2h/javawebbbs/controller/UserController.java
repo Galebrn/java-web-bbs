@@ -1,5 +1,6 @@
 package com.studio2h.javawebbbs.controller;
 
+import com.studio2h.javawebbbs.pojo.post.Post;
 import com.studio2h.javawebbbs.pojo.post.PostPrivate;
 import com.studio2h.javawebbbs.pojo.request.UserLoginRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
@@ -139,18 +140,31 @@ public class UserController {
             }
         }
 
+        newUser.setUserId(userId);
         userService.updateUser(newUser);
         return Result.success();
     }
 
-    @PutMapping("/{userId}/follow/editor")
-    public Result updateUserFollow(@PathVariable Integer userId) {
+    @PostMapping("/{userId}/follow/editor")
+    public Result insertNewFollow(@PathVariable Integer userId, @RequestBody User followedUser) {
 
         return Result.success();
     }
 
-    @PutMapping("/{userId}/private/editor")
-    public Result updateUserPrivate(@PathVariable Integer userId) {
+    @PostMapping("/{userId}/private/editor")
+    public Result insertNewPrivate(@PathVariable Integer userId, @RequestBody Post post) {
+
+        return Result.success();
+    }
+
+    @DeleteMapping("/{userId}/follow/editor")
+    public Result deleteFollow(@PathVariable Integer userId, @RequestBody User followedUser) {
+
+        return Result.success();
+    }
+
+    @DeleteMapping("/{userId}/private/editor")
+    public Result deletePrivate(@PathVariable Integer userId, @RequestBody Post post) {
 
         return Result.success();
     }

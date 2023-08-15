@@ -1,6 +1,7 @@
 package com.studio2h.javawebbbs;
 
 
+import com.studio2h.javawebbbs.interceptor.LoginCheckInterceptor;
 import com.studio2h.javawebbbs.utils.JwtUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,12 +24,18 @@ class JavaWebBbsApplicationTests {
     @Test
     void test(){
         Map<String,Object> a = new HashMap<>();
-        a.put("name","root");
-        a.put("password","123456");
+        a.put("userId",1);
+        a.put("userName","root");
 
         String token = JwtUtils.generateJwt(a);
         System.out.println(token);
         System.out.println(JwtUtils.parseJwt(token));
+
+        System.out.println(JwtUtils.parseJwt(token).get("userId",Integer.class));
+
+       /* String url = "http://localhost:9000/users/login";
+        LoginCheckInterceptor loginCheckInterceptor = new LoginCheckInterceptor();
+        loginCheckInterceptor.getIdFromUrl(url);*/
     }
 
 }

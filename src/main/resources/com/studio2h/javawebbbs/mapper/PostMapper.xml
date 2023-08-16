@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studio2h.javawebbbs.mapper.PostMapper">
+
+    <insert id="insertNewPost">
+        insert into post (post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+                          count_of_private, count_of_browsers, category_id, author_id, post_if_visible)
+        values (#{postId}, #{postTitle}, #{createTime}, #{updateTime}, #{postText}, #{countOfComments}, #{countOfLikes},
+                #{countOfPrivate}, #{countOfBrowsers}, #{categoryId}, #{authorId}, #{postIfVisible})
+    </insert>
+    <update id="removePostOrNot">
+        update post
+        set post_if_visible = #{ifVisible},
+            update_time     = now()
+        where post_id = #{id}
+    </update>
+    <delete id="deletePost">
+        delete
+        from post
+        where post_id = #{id}
+    </delete>
+    <select id="getPostById" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where post_id = #{id}
+    </select>
+    <select id="getPostByTitle" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where post_title = #{title}
+    </select>
+    <select id="getPostByAuthor" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where author_id = #{id}
+    </select>
+</mapper>

@@ -55,7 +55,7 @@ public interface UserMapper {
      * @param id     用户id
      * @param ifUsed 用户是否启用
      */
-    void removeUserById(Integer id, boolean ifUsed);
+    void removeUserOrNotById(Integer id, Integer ifUsed);
 
     /**
      * 根据userName设置用户userIfUsed值，为false表示用户不再使用，为true表示用户重新启用
@@ -63,7 +63,7 @@ public interface UserMapper {
      * @param name   用户名称
      * @param ifUsed 用户是否启用
      */
-    void removeUserByName(String name, boolean ifUsed);
+    void removeUserOrNotByName(String name, Integer ifUsed);
 
     /**
      * 根据userId更新用户数据
@@ -116,9 +116,28 @@ public interface UserMapper {
      */
     User getByEmail(String email);
 
-    User getByNameAndPassword(String name,String password);
+    /**
+     * 根据userName和userPassword获取用户
+     *
+     * @param name     用户名称
+     * @param password 用户密码
+     * @return 用户实例
+     */
+    User getByNameAndPassword(String name, String password);
 
+    /**
+     * 根据userPhoneNumber获取用户
+     *
+     * @param phoneNum 用户电话号码
+     * @return 用户实例
+     */
     User getUserByPhoneNum(String phoneNum);
 
+    /**
+     * 根据userEmail获取用户
+     *
+     * @param email 用户电子邮箱
+     * @return 用户实例
+     */
     User getUserByEmail(String email);
 }

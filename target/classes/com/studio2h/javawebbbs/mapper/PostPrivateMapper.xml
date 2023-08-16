@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studio2h.javawebbbs.mapper.PostPrivateMapper">
+    <insert id="insertNewPrivate">
+        insert into post_private (user_id, post_id)
+        values (#{userId}, #{postId})
+    </insert>
+    <delete id="deletePrivate">
+        delete
+        from post_private
+        where user_id = #{userId}
+          and post_id = #{postId}
+    </delete>
+
+    <select id="listById" resultType="com.studio2h.javawebbbs.pojo.post.PostPrivate">
+        select user_id, post_id
+        from post_private
+        where user_id = #{id}
+    </select>
+</mapper>

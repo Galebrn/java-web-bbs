@@ -37,7 +37,7 @@
         from post
         where post_id = #{id}
     </select>
-    <select id="getPostByTitle" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+    <select id="listPostByTitle" resultType="com.studio2h.javawebbbs.pojo.post.Post">
         select post_id,
                post_title,
                create_time,
@@ -53,7 +53,7 @@
         from post
         where post_title = #{title}
     </select>
-    <select id="getPostByAuthor" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+    <select id="listPostByAuthor" resultType="com.studio2h.javawebbbs.pojo.post.Post">
         select post_id,
                post_title,
                create_time,
@@ -68,5 +68,145 @@
                post_if_visible
         from post
         where author_id = #{id}
+    </select>
+    <select id="listOrderByCreateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where create_time between #{startTime} and #{endTime}
+        order by create_time
+    </select>
+    <select id="listReverseByCreateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where create_time between #{startTime} and #{endTime}
+        order by create_time desc
+    </select>
+    <select id="listOrderByUpdateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where update_time between #{startTime} and #{endTime}
+        order by update_time
+    </select>
+    <select id="listReverseByUpdateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where update_time between #{startTime} and #{endTime}
+        order by update_time desc
+    </select>
+    <select id="listOrderByCreateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where create_time between #{startTime} and #{endTime}
+          and category_id = #{id}
+        order by create_time
+    </select>
+    <select id="listReverseByCreateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where create_time between #{startTime} and #{endTime}
+          and category_id = #{id}
+        order by create_time desc
+    </select>
+    <select id="listOrderByUpdateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where update_time between #{startTime} and #{endTime}
+          and category_id = #{id}
+        order by update_time
+    </select>
+    <select id="listReverseByUpdateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id,
+               post_title,
+               create_time,
+               update_time,
+               post_text,
+               count_of_comments,
+               count_of_likes,
+               count_of_private,
+               count_of_browsers,
+               category_id,
+               author_id,
+               post_if_visible
+        from post
+        where update_time between #{startTime} and #{endTime}
+          and category_id = #{id}
+        order by update_time desc
     </select>
 </mapper>

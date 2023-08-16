@@ -99,7 +99,7 @@ public interface PostMapper {
      * @param startTime  起始插叙时间
      * @param endTime    末尾查询时间
      * @param categoryId 帖子分类id
-     * @return
+     * @return 帖子列表
      */
     List<Post> listOrderByCreateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
 
@@ -109,7 +109,7 @@ public interface PostMapper {
      * @param startTime  起始插叙时间
      * @param endTime    末尾查询时间
      * @param categoryId 帖子分类id
-     * @return
+     * @return 帖子列表
      */
     List<Post> listReverseByCreateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
 
@@ -119,7 +119,7 @@ public interface PostMapper {
      * @param startTime  起始插叙时间
      * @param endTime    末尾查询时间
      * @param categoryId 帖子分类id
-     * @return
+     * @return 帖子列表
      */
     List<Post> listOrderByUpdateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
 
@@ -129,7 +129,7 @@ public interface PostMapper {
      * @param startTime  起始插叙时间
      * @param endTime    末尾查询时间
      * @param categoryId 帖子分类id
-     * @return
+     * @return 帖子列表
      */
     List<Post> listReverseByUpdateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
 }

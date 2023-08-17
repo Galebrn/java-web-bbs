@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class UserQueryRequest {
     private Integer userId;
     private String userName;
+    private String userPassword;
     private Integer userSex;
     private Integer userExp;
     private Integer userLevel;

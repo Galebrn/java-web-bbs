@@ -1,4 +1,4 @@
-package com.studio2h.javawebbbs.pojo.post;
+package com.studio2h.javawebbbs.pojo.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
-    private Integer commentId;
-    private Integer postId;
+public class CicQueryRequest {
+    private Integer cicId;
     private Integer authorId;
-    private Integer commentStatus;
+    private Integer commentAuthorId;
+    private Integer commentId;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    private String commentText;
+    private Integer cicStatus;
 }

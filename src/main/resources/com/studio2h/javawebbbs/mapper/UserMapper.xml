@@ -16,16 +16,10 @@
     <update id="updateStatusById">
         update `user`
         set user_status = #{status},
-            update_time  = now()
+            update_time = now()
         where user_id = #{id}
     </update>
-    <update id="removeUserOrNotByName">
-        update `user`
-        set user_status = #{status},
-            update_time  = now()
-        where user_name = #{name}
-    </update>
-    <update id="updateUserById">
+    <update id="updateUser">
         update `user`
         <set>
             <if test="userName != null and userName != ''">
@@ -82,272 +76,625 @@
         </set>
         where user_id = #{userId}
     </update>
-    <update id="updateUserByName">
-        update `user`
-        <set>
-            <if test="newUser.userName != null and newUser.userName != ''">
-                user_name = #{newUser.userName},
-            </if>
-            <if test="newUser.userPassword != null and newUser.userPassword != ''">
-                user_password = #{newUser.userPassword},
-            </if>
-            <if test="newUser.userAvatarPath != null and newUser.userAvatarPath != ''">
-                user_avatar_path = #{newUser.userAvatarPath},
-            </if>
-            <if test="newUser.userSex != null">
-                user_sex = #{newUser.userSex},
-            </if>
-            <if test="newUser.userBirthday != null">
-                user_birthday = #{newUser.userBirthday},
-            </if>
-            <if test="newUser.userSignature != null and newUser.userSignature != ''">
-                user_signature = #{newUser.userSignature},
-            </if>
-            <if test="newUser.userExp != null">
-                user_exp = #{newUser.userExp},
-            </if>
-            <if test="newUser.userLevel != null">
-                user_level = #{newUser.userLevel},
-            </if>
-            <if test="newUser.userEmail != null and newUser.userEmail != ''">
-                user_email = #{newUser.userEmail},
-            </if>
-            <if test="newUser.userPhoneNumber != null and newUser.userPhoneNumber != ''">
-                user_phone_number = #{newUser.userPhoneNumber},
-            </if>
-            <if test="newUser.userIfOp != null">
-                user_if_op = #{newUser.userIfOp},
-            </if>
-            <if test="newUser.updateTime != null">
-                update_time = #{newUser.updateTime}
-            </if>
-            <if test="newUser.countOfFollow != null">
-                count_of_follow = #{newUser.countOfFollow}
-            </if>
-            <if test="newUser.countOfBeFollow != null">
-                count_of_be_follow = #{newUser.countOfBeFollow}
-            </if>
-            <if test="newUser.updateTime != null">
-                count_of_private_posts = #{newUser.countOfPrivatePosts}
-            </if>
-            <if test="newUser.updateTime != null">
-                count_of_posts = #{newUser.countOfPosts}
-            </if>
-            <if test="newUser.updateTime != null">
-                count_of_comments = #{newUser.countOfComments}
-            </if>
-        </set>
-        where user_name = #{name}
-    </update>
     <delete id="deleteUserById">
         delete
         from `user`
         where user_id = #{id}
     </delete>
-    <delete id="deleteUserByName">
-        delete
-        from `user`
-        where user_name = #{name}
-    </delete>
-    <select id="getUserById" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="getByConditions" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
-        where user_id = #{id}
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
     </select>
-    <select id="getUserByName" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="countByConditions" resultType="java.lang.Integer">
+        select count(*) from `user`
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
+    </select>
+    <select id="listByConditions" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
-        where user_name = #{name}
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
     </select>
-    <select id="countUsers" resultType="java.lang.Integer">
-        select count(*)
-        from `user`
-    </select>
-    <select id="countUsedUsers" resultType="java.lang.Integer">
-        select count(*)
-        from `user`
-        where user_status = 1
-    </select>
-    <select id="listAllUsedUsers" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="listOrderByExp" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
-        where user_status = 1
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
+        order by user_exp
     </select>
-    <select id="listAllUsers" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="listOrderByFollow" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
+        order by count_of_follow
     </select>
-    <select id="getByEmail" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="listOrderByBeFollow" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
-        where user_email = #{email}
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
+        order by count_of_be_follow
     </select>
-    <select id="getByNameAndPassword" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="listOrderByPrivate" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
-        where user_name = #{name}
-          and user_password = #{password}
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
+        order by count_of_private_posts
     </select>
-    <select id="getUserByPhoneNum" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="listOrderByPost" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
-        where user_phone_number = #{phoneNum}
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
+        order by count_of_posts
     </select>
-    <select id="getUserByEmail" resultType="com.studio2h.javawebbbs.pojo.user.User">
+    <select id="listOrderByComment" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
-               user_name,
-               user_password,
-               user_avatar_path,
-               user_sex,
-               user_birthday,
-               user_signature,
-               user_exp,
-               user_level,
-               user_email,
-               user_phone_number,
-               user_if_op,
-               create_time,
-               update_time,
-               user_status,
-               count_of_follow,
-               count_of_be_follow,
-               count_of_private_posts,
-               count_of_posts,
-               count_of_comments
+        user_name,
+        user_password,
+        user_avatar_path,
+        user_sex,
+        user_birthday,
+        user_signature,
+        user_exp,
+        user_level,
+        user_email,
+        user_phone_number,
+        user_if_op,
+        create_time,
+        update_time,
+        user_status,
+        count_of_follow,
+        count_of_be_follow,
+        count_of_private_posts,
+        count_of_posts,
+        count_of_comments
         from `user`
-        where user_email = #{email}
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="userPassword != null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userSex != null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userExp != null">
+                and user_exp = #{userExp}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel}
+            </if>
+            <if test="userEmail != null">
+                and user_email = #{userEmail}
+            </if>
+            <if test="userPhoneNumber != null">
+                and user_phone_number = #{userPhoneNumber}
+            </if>
+            <if test="userIfOp != null">
+                and user_if_op = #{userIfOp}
+            </if>
+            <if test="userStatus != null">
+                and user_status = #{userStatus}
+            </if>
+            <if test="countOfFollow != null">
+                and count_of_follow = #{countOfFollow}
+            </if>
+            <if test="countOfBeFollow != null">
+                and count_of_be_follow = #{countOfBeFollow}
+            </if>
+            <if test="countOfPrivatePosts != null">
+                and count_of_private_posts = #{countOfPrivatePosts}
+            </if>
+            <if test="countOfPosts != null">
+                and count_of_posts = #{countOfPosts}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+        </where>
+        order by count_of_comments
     </select>
 </mapper>

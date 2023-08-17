@@ -20,5 +20,5 @@ public class CommentInComment {
     private String cicText;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    private Integer cicIfVisible;
+    private Integer cicStatus;
 }

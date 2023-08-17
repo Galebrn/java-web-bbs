@@ -3,6 +3,7 @@ package com.studio2h.javawebbbs.service.impl;
 import com.studio2h.javawebbbs.mapper.UserFollowMapper;
 import com.studio2h.javawebbbs.mapper.UserMapper;
 import com.studio2h.javawebbbs.pojo.request.UserLoginRequest;
+import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
 import com.studio2h.javawebbbs.pojo.user.User;
 import com.studio2h.javawebbbs.pojo.user.UserFollow;
@@ -26,7 +27,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User userLogin(UserLoginRequest userLoginRequest) {
-        return userMapper.getByNameAndPassword(userLoginRequest.getUserName(), userLoginRequest.getUserPassword());
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+        userQueryRequest.setUserName(userLoginRequest.getUserName());
+        userQueryRequest.setUserPassword(userLoginRequest.getUserPassword());
+        return userMapper.getByConditions(userQueryRequest);
     }
 
     @Override
@@ -36,12 +40,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Integer userId) {
-        return userMapper.getUserById(userId);
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+        userQueryRequest.setUserId(userId);
+        return userMapper.getByConditions(userQueryRequest);
     }
 
     @Override
     public User getUserByName(String name) {
-        return userMapper.getUserByName(name);
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+        userQueryRequest.setUserName(name);
+        return userMapper.getByConditions(userQueryRequest);
     }
 
     @Override
@@ -72,16 +80,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByPhoneNum(String phoneNum) {
-        return userMapper.getUserByPhoneNum(phoneNum);
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+        userQueryRequest.setUserPhoneNumber(phoneNum);
+        return userMapper.getByConditions(userQueryRequest);
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userMapper.getUserByEmail(email);
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+        userQueryRequest.setUserEmail(email);
+        return userMapper.getByConditions(userQueryRequest);
     }
 
     @Override
     public void updateUser(User newUser) {
-        userMapper.updateUserById(newUser);
+        userMapper.updateUser(newUser);
     }
 }

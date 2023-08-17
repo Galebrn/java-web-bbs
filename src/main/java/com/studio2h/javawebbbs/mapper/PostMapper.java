@@ -50,7 +50,7 @@ public interface PostMapper {
     List<Post> listByConditions(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照创建时间顺序排序
+     * 根据条件获取帖子列表，按照创建时间升序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -58,7 +58,7 @@ public interface PostMapper {
     List<Post> listOrderByCreateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照创建时间逆序排序
+     * 根据条件获取帖子列表，按照创建时间降序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -66,7 +66,7 @@ public interface PostMapper {
     List<Post> listReverseByCreateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照修改时间顺序排序
+     * 根据条件获取帖子列表，按照修改时间升序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -74,7 +74,7 @@ public interface PostMapper {
     List<Post> listOrderByUpdateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照修改时间逆序排序
+     * 根据条件获取帖子列表，按照修改时间降序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -82,7 +82,7 @@ public interface PostMapper {
     List<Post> listReverseByUpdateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照评论数量顺序排序
+     * 根据条件获取帖子列表，按照评论数量升序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -90,7 +90,7 @@ public interface PostMapper {
     List<Post> listOrderByComments(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照评论数量逆序排序
+     * 根据条件获取帖子列表，按照评论数量逆降序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -98,7 +98,7 @@ public interface PostMapper {
     List<Post> listOrderByLikes(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照收藏数量顺序排序
+     * 根据条件获取帖子列表，按照收藏数量升序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -106,7 +106,7 @@ public interface PostMapper {
     List<Post> listOrderByPrivate(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据条件获取帖子列表，按照收藏数量逆序排序
+     * 根据条件获取帖子列表，按照收藏数量降序排序
      *
      * @param postQueryRequest 查询条件实例
      * @return 帖子列表
@@ -120,4 +120,11 @@ public interface PostMapper {
      * @return 帖子数量
      */
     Integer countByConditions(PostQueryRequest postQueryRequest);
+
+    /**
+     * 更新帖子
+     *
+     * @param newPost 新的帖子实例
+     */
+    void updatePost(Post newPost);
 }

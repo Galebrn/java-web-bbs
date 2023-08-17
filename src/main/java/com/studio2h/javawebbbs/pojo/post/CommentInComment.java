@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class CommentInComment {
     private Integer cicId;
     private Integer authorId;
-    private Integer commentAuthorId;
+    private Integer beCommentId;
     private Integer commentId;
     private String cicText;
     private LocalDateTime createTime;

@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studio2h.javawebbbs.mapper.CommentMapper">
     <insert id="insertNewComment">
-        insert into comment (comment_id, post_id, author_id, comment_status, create_time, update_time, comment_text)
-        values (#{commentId}, #{postId}, #{authorId}, #{commentIfVisible}, #{createTime}, #{updateTime}, #{commentText})
+        insert into comment (post_id, author_id, comment_status, create_time, update_time, comment_text)
+        values (#{postId}, #{authorId}, #{commentIfVisible}, #{createTime}, #{updateTime}, #{commentText})
     </insert>
     <update id="updateStatus">
         update comment

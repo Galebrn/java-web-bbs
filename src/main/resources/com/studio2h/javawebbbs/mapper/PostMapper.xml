@@ -5,9 +5,9 @@
 <mapper namespace="com.studio2h.javawebbbs.mapper.PostMapper">
 
     <insert id="insertNewPost">
-        insert into post (post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        insert into post (post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
                           count_of_private, count_of_browsers, category_id, author_id, post_status)
-        values (#{postId}, #{postTitle}, #{createTime}, #{updateTime}, #{postText}, #{countOfComments}, #{countOfLikes},
+        values (#{postTitle}, #{createTime}, #{updateTime}, #{postText}, #{countOfComments}, #{countOfLikes},
                 #{countOfPrivate}, #{countOfBrowsers}, #{categoryId}, #{authorId}, #{postIfVisible})
     </insert>
     <update id="updateStatusById">

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studio2h.javawebbbs.mapper.CommentMapper">
+
+    <insert id="insertNewComment">
+        insert into comment (comment_id, post_id, author_id, comment_if_visible, create_time, update_time, comment_text)
+        values (#{commentId}, #{postId}, #{authorId}, #{commentIfVisible}, #{createTime}, #{updateTime}, #{commentText})
+    </insert>
+    <update id="removeCommentOrNot">
+        update comment
+        set comment_if_visible = #{ifVisible},
+            update_time        = now()
+        where post_id = #{id}
+    </update>
+    <delete id="deleteComment">
+        delete
+        from comment
+        where comment_id = #{id}
+    </delete>
+    <select id="listByPostId" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
+        select comment_id, post_id, author_id, comment_if_visible, create_time, update_time, comment_text
+        from comment
+        where post_id = #{id}
+    </select>
+    <select id="listByAuthorId" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
+        select comment_id, post_id, author_id, comment_if_visible, create_time, update_time, comment_text
+        from comment
+        where author_id = #{id}
+    </select>
+</mapper>

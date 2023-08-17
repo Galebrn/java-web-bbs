@@ -6,14 +6,14 @@
 
     <insert id="insertNewPost">
         insert into post (post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
-                          count_of_private, count_of_browsers, category_id, author_id, post_if_visible)
+                          count_of_private, count_of_browsers, category_id, author_id, post_status)
         values (#{postId}, #{postTitle}, #{createTime}, #{updateTime}, #{postText}, #{countOfComments}, #{countOfLikes},
                 #{countOfPrivate}, #{countOfBrowsers}, #{categoryId}, #{authorId}, #{postIfVisible})
     </insert>
-    <update id="removePostOrNot">
+    <update id="updateStatusById">
         update post
-        set post_if_visible = #{ifVisible},
-            update_time     = now()
+        set post_status = #{status},
+            update_time = now()
         where post_id = #{id}
     </update>
     <delete id="deletePost">
@@ -21,192 +21,506 @@
         from post
         where post_id = #{id}
     </delete>
-    <select id="getPostById" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where post_id = #{id}
-    </select>
-    <select id="listPostByTitle" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where post_title = #{title}
-    </select>
-    <select id="listPostByAuthor" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where author_id = #{id}
-    </select>
     <select id="listOrderByCreateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where create_time between #{startTime} and #{endTime}
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
         order by create_time
-    </select>
-    <select id="listReverseByCreateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where create_time between #{startTime} and #{endTime}
-        order by create_time desc
     </select>
     <select id="listOrderByUpdateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where update_time between #{startTime} and #{endTime}
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
         order by update_time
     </select>
-    <select id="listReverseByUpdateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where update_time between #{startTime} and #{endTime}
-        order by update_time desc
-    </select>
-    <select id="listOrderByCreateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where create_time between #{startTime} and #{endTime}
-          and category_id = #{id}
-        order by create_time
-    </select>
-    <select id="listReverseByCreateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where create_time between #{startTime} and #{endTime}
-          and category_id = #{id}
+    <select id="listReverseByCreateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
         order by create_time desc
     </select>
-    <select id="listOrderByUpdateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where update_time between #{startTime} and #{endTime}
-          and category_id = #{id}
-        order by update_time
+    <select id="countByConditions" resultType="java.lang.Integer">
+        select count(*) from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
     </select>
-    <select id="listReverseByUpdateTimeAndCategory" resultType="com.studio2h.javawebbbs.pojo.post.Post">
-        select post_id,
-               post_title,
-               create_time,
-               update_time,
-               post_text,
-               count_of_comments,
-               count_of_likes,
-               count_of_private,
-               count_of_browsers,
-               category_id,
-               author_id,
-               post_if_visible
-        from post
-        where update_time between #{startTime} and #{endTime}
-          and category_id = #{id}
+    <select id="getByConditions" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+    <select id="listByConditions" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+    <select id="listReverseByUpdateTime" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
         order by update_time desc
+    </select>
+    <select id="listOrderByComments" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        order by count_of_comments
+    </select>
+    <select id="listOrderByLikes" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        order by count_of_likes
+    </select>
+    <select id="listOrderByPrivate" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        order by count_of_private
+    </select>
+    <select id="listOrderByBrowsers" resultType="com.studio2h.javawebbbs.pojo.post.Post">
+        select post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        count_of_private, count_of_browsers, category_id, author_id, post_status from post
+        <where>
+            <if test="postId != null">
+                post_id = #{postId}
+            </if>
+            <if test="postTitle != null">
+                and post_title = #{postTitle}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and create_time between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != null and endUpdateTime != null">
+                and update_time between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+            <if test="countOfComments != null">
+                and count_of_comments = #{countOfComments}
+            </if>
+            <if test="countOfLikes != null">
+                and count_of_likes = #{countOfLikes}
+            </if>
+            <if test="countOfPrivate != null">
+                and count_of_private = #{countOfLikes}
+            </if>
+            <if test="countOfBrowsers != null">
+                and count_of_browsers = #{countOfBrowsers}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="postStatus != null">
+                and post_status = #{postStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        order by count_of_browsers
     </select>
 </mapper>

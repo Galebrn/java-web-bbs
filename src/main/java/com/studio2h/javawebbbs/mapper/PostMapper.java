@@ -1,9 +1,9 @@
 package com.studio2h.javawebbbs.mapper;
 
 import com.studio2h.javawebbbs.pojo.post.Post;
+import com.studio2h.javawebbbs.pojo.request.PostQueryRequest;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -28,108 +28,96 @@ public interface PostMapper {
     /**
      * 设置帖子可见性
      *
-     * @param id        帖子id
-     * @param ifVisible 帖子是否可见
+     * @param id     帖子id
+     * @param status 帖子是否可见
      */
-    void removePostOrNot(Integer id, Integer ifVisible);
+    void updateStatusById(Integer id, Integer status);
 
     /**
-     * 根据postId获取帖子
+     * 根据条件获取指定帖子
      *
-     * @param id 帖子id
+     * @param postQueryRequest 查询条件实例
      * @return 帖子实例
      */
-    Post getPostById(Integer id);
+    Post getByConditions(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据postTitle获取帖子
+     * 根据条件获取帖子列表
      *
-     * @param title 帖子标题
-     * @return 帖子实例
-     */
-    List<Post> listPostByTitle(String title);
-
-    /**
-     * 根据authorId获取帖子
-     *
-     * @param id 帖子创作者id
-     * @return 帖子实例
-     */
-    List<Post> listPostByAuthor(Integer id);
-
-    /**
-     * 根据createTime获取帖子列表，顺序排序
-     *
-     * @param startTime 起始查询时间
-     * @param endTime   末尾查询时间
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listOrderByCreateTime(LocalDateTime startTime, LocalDateTime endTime);
+    List<Post> listByConditions(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据createTime获取帖子列表，倒序排序
+     * 根据条件获取帖子列表，按照创建时间顺序排序
      *
-     * @param startTime 起始查询时间
-     * @param endTime   末尾查询时间
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listReverseByCreateTime(LocalDateTime startTime, LocalDateTime endTime);
+    List<Post> listOrderByCreateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据updateTime获取帖子列表，顺序排序
+     * 根据条件获取帖子列表，按照创建时间逆序排序
      *
-     * @param startTime 起始查询时间
-     * @param endTime   末尾查询时间
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listOrderByUpdateTime(LocalDateTime startTime, LocalDateTime endTime);
+    List<Post> listReverseByCreateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据updateTime获取帖子列表，倒序排序
+     * 根据条件获取帖子列表，按照修改时间顺序排序
      *
-     * @param startTime 起始查询时间
-     * @param endTime   末尾查询时间
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listReverseByUpdateTime(LocalDateTime startTime, LocalDateTime endTime);
+    List<Post> listOrderByUpdateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据createTime和categoryId查询帖子列表，顺序排序
+     * 根据条件获取帖子列表，按照修改时间逆序排序
      *
-     * @param startTime  起始插叙时间
-     * @param endTime    末尾查询时间
-     * @param categoryId 帖子分类id
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listOrderByCreateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
+    List<Post> listReverseByUpdateTime(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据createTime和categoryId查询帖子列表，倒序排序
+     * 根据条件获取帖子列表，按照评论数量顺序排序
      *
-     * @param startTime  起始插叙时间
-     * @param endTime    末尾查询时间
-     * @param categoryId 帖子分类id
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listReverseByCreateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
+    List<Post> listOrderByComments(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据updateTime和categoryId查询帖子列表，顺序排序
+     * 根据条件获取帖子列表，按照评论数量逆序排序
      *
-     * @param startTime  起始插叙时间
-     * @param endTime    末尾查询时间
-     * @param categoryId 帖子分类id
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listOrderByUpdateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
+    List<Post> listOrderByLikes(PostQueryRequest postQueryRequest);
 
     /**
-     * 根据updateTime和categoryId查询帖子列表，倒序排序
+     * 根据条件获取帖子列表，按照收藏数量顺序排序
      *
-     * @param startTime  起始插叙时间
-     * @param endTime    末尾查询时间
-     * @param categoryId 帖子分类id
+     * @param postQueryRequest 查询条件实例
      * @return 帖子列表
      */
-    List<Post> listReverseByUpdateTimeAndCategory(LocalDateTime startTime, LocalDateTime endTime, Integer categoryId);
+    List<Post> listOrderByPrivate(PostQueryRequest postQueryRequest);
+
+    /**
+     * 根据条件获取帖子列表，按照收藏数量逆序排序
+     *
+     * @param postQueryRequest 查询条件实例
+     * @return 帖子列表
+     */
+    List<Post> listOrderByBrowsers(PostQueryRequest postQueryRequest);
+
+    /**
+     * 根据条件获取帖子数量
+     *
+     * @param postQueryRequest 查询条件实例
+     * @return 帖子数量
+     */
+    Integer countByConditions(PostQueryRequest postQueryRequest);
 }

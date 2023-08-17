@@ -50,20 +50,20 @@ public interface UserMapper {
     void deleteUserByName(String name);
 
     /**
-     * 根据userID设置用户userIfUsed值，为false表示用户不再使用，为true表示用户重新启用
+     * 根据userID设置userStatus值
      *
      * @param id     用户id
-     * @param ifUsed 用户是否启用
+     * @param status 用户状态
      */
-    void removeUserOrNotById(Integer id, Integer ifUsed);
+    void updateStatusById(Integer id, Integer status);
 
     /**
-     * 根据userName设置用户userIfUsed值，为false表示用户不再使用，为true表示用户重新启用
+     * 根据userID设置userStatus值
      *
      * @param name   用户名称
-     * @param ifUsed 用户是否启用
+     * @param status 用户状态
      */
-    void removeUserOrNotByName(String name, Integer ifUsed);
+    void removeUserOrNotByName(String name, Integer status);
 
     /**
      * 根据userId更新用户数据

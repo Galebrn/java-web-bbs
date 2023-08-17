@@ -6,22 +6,22 @@
     <insert id="insertUser">
         insert into `user` (user_name, user_password, user_avatar_path, user_sex, user_birthday, user_signature,
                             user_exp, user_level, user_email, user_phone_number, user_if_op, create_time, update_time,
-                            user_if_used, count_of_follow, count_of_be_follow, count_of_private_posts, count_of_posts,
+                            user_status, count_of_follow, count_of_be_follow, count_of_private_posts, count_of_posts,
                             count_of_comments)
         values (#{userName}, #{userPassword}, #{userAvatarPath}, #{userSex}, #{userBirthday}, #{userSignature},
                 #{userExp}, #{userLevel}, #{userEmail}, #{userPhoneNumber}, #{userIfOp}, #{createTime}, #{updateTime},
                 #{userIfUsed}, #{countOfFollow}, #{countOfBeFollow}, #{countOfPrivatePosts}, #{countOfPosts},
                 #{countOfComments})
     </insert>
-    <update id="removeUserOrNotById">
+    <update id="updateStatusById">
         update `user`
-        set user_if_used = #{ifUsed},
+        set user_status = #{status},
             update_time  = now()
         where user_id = #{id}
     </update>
     <update id="removeUserOrNotByName">
         update `user`
-        set user_if_used = #{ifUsed},
+        set user_status = #{status},
             update_time  = now()
         where user_name = #{name}
     </update>
@@ -164,7 +164,7 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,
@@ -188,7 +188,7 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,
@@ -204,7 +204,7 @@
     <select id="countUsedUsers" resultType="java.lang.Integer">
         select count(*)
         from `user`
-        where user_if_used = 1
+        where user_status = 1
     </select>
     <select id="listAllUsedUsers" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
@@ -221,14 +221,14 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,
                count_of_posts,
                count_of_comments
         from `user`
-        where user_if_used = 1
+        where user_status = 1
     </select>
     <select id="listAllUsers" resultType="com.studio2h.javawebbbs.pojo.user.User">
         select user_id,
@@ -245,7 +245,7 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,
@@ -268,7 +268,7 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,
@@ -292,7 +292,7 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,
@@ -317,7 +317,7 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,
@@ -341,7 +341,7 @@
                user_if_op,
                create_time,
                update_time,
-               user_if_used,
+               user_status,
                count_of_follow,
                count_of_be_follow,
                count_of_private_posts,

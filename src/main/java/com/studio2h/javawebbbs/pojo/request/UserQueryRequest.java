@@ -1,4 +1,4 @@
-package com.studio2h.javawebbbs.pojo.user;
+package com.studio2h.javawebbbs.pojo.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,21 +13,15 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserQueryRequest {
     private Integer userId;
     private String userName;
-    private String userPassword;
-    private String userAvatarPath;
     private Integer userSex;
-    private LocalDate userBirthday;
-    private String userSignature;
     private Integer userExp;
     private Integer userLevel;
     private String userEmail;
     private String userPhoneNumber;
     private Integer userIfOp;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
     private Integer userStatus;
     private Integer countOfFollow;
     private Integer countOfBeFollow;

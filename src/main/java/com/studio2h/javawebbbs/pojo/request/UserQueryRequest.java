@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 /**
  * @author Galebrn
  */
@@ -29,4 +26,22 @@ public class UserQueryRequest {
     private Integer countOfPrivatePosts;
     private Integer countOfPosts;
     private Integer countOfComments;
+
+    public UserQueryRequest(UserLoginRequest userLoginRequest) {
+        this.userId = null;
+        this.userName = userLoginRequest.getUserName();
+        this.userPassword = userLoginRequest.getUserPassword();
+        this.userSex = null;
+        this.userExp = null;
+        this.userLevel = null;
+        this.userEmail = null;
+        this.userPhoneNumber = null;
+        this.userIfOp = null;
+        this.userStatus = null;
+        this.countOfFollow = null;
+        this.countOfBeFollow = null;
+        this.countOfPrivatePosts = null;
+        this.countOfPosts = null;
+        this.countOfComments = null;
+    }
 }

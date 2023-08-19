@@ -19,6 +19,22 @@ public interface PostPrivateMapper {
     List<PostPrivate> listById(Integer id);
 
     /**
+     * 列出userId为id的用户收藏帖子的id列表
+     *
+     * @param id 用户id
+     * @return 帖子id列表
+     */
+    List<Integer> listPrivatePostIds(Integer id);
+
+    /**
+     * 列出postId为id的帖子的收藏者id列表
+     *
+     * @param id 帖子id
+     * @return 收藏者id列表
+     */
+    List<Integer> listCollectorsIds(Integer id);
+
+    /**
      * 新增收藏项
      *
      * @param postPrivate 收藏项

@@ -1,6 +1,7 @@
 package com.studio2h.javawebbbs.mapper;
 
 import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
+import com.studio2h.javawebbbs.pojo.response.UserQueryResponse;
 import com.studio2h.javawebbbs.pojo.user.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -20,6 +21,14 @@ public interface UserMapper {
      * @return 用户实例
      */
     User getByConditions(UserQueryRequest userQueryRequest);
+
+    /**
+     * 根据条件获取指定用户，返回不包括password和updateTime的响应
+     *
+     * @param userQueryRequest 查询条件实例
+     * @return 用户实例
+     */
+    UserQueryResponse getByConditionsReturnUqr(UserQueryRequest userQueryRequest);
 
     /**
      * 根据条件获取指定用户数量

@@ -19,4 +19,14 @@
         from post_private
         where user_id = #{id}
     </select>
+    <select id="listPrivatePostIds" resultType="java.lang.Integer">
+        select post_id
+        from post_private
+        where user_id = #{id}
+    </select>
+    <select id="listCollectorsIds" resultType="java.lang.Integer">
+        select user_id
+        from post_private
+        where post_id = #{id}
+    </select>
 </mapper>

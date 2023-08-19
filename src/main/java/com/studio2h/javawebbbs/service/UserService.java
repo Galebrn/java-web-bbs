@@ -1,9 +1,9 @@
 package com.studio2h.javawebbbs.service;
 
-import com.studio2h.javawebbbs.pojo.request.UserLoginRequest;
+import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
+import com.studio2h.javawebbbs.pojo.response.UserQueryResponse;
 import com.studio2h.javawebbbs.pojo.user.User;
-import com.studio2h.javawebbbs.pojo.user.UserFollow;
 
 import java.util.List;
 
@@ -14,9 +14,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User userLogin(UserLoginRequest userLoginRequest);
-
-    List<UserFollow> listFollowers(Integer userId);
+    User getByConditions(UserQueryRequest userQueryRequest);
 
     User getUserById(Integer userId);
 
@@ -29,4 +27,10 @@ public interface UserService {
     User getUserByEmail(String email);
 
     void updateUser(User newUser);
+
+    List<Integer> listFollowers(Integer userId);
+
+    List<UserQueryResponse> listByIds(List<Integer> ids);
+
+    List<Integer> listFans(Integer userId);
 }

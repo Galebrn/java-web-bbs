@@ -1,5 +1,9 @@
 package com.studio2h.javawebbbs.pojo.user;
 
+import com.studio2h.javawebbbs.constant.PermissionConstant;
+import com.studio2h.javawebbbs.constant.SexConstant;
+import com.studio2h.javawebbbs.constant.StatusConstant;
+import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,4 +38,27 @@ public class User {
     private Integer countOfPrivatePosts;
     private Integer countOfPosts;
     private Integer countOfComments;
+
+    public User(UserRegisterRequest userRegisterRequest) {
+        this.userId = null;
+        this.userName = userRegisterRequest.getUserName();
+        this.userPassword = userRegisterRequest.getUserPassword();
+        this.userAvatarPath = null;
+        this.userSex = SexConstant.NULL;
+        this.userBirthday = null;
+        this.userSignature = null;
+        this.userExp = 0;
+        this.userLevel = 0;
+        this.userEmail = null;
+        this.userPhoneNumber = null;
+        this.userIfOp = PermissionConstant.ORDINARY;
+        this.createTime = LocalDateTime.now();
+        this.updateTime = LocalDateTime.now();
+        this.userStatus = StatusConstant.ENABLE;
+        this.countOfFollow = 0;
+        this.countOfBeFollow = 0;
+        this.countOfPrivatePosts = 0;
+        this.countOfPosts = 0;
+        this.countOfComments = 0;
+    }
 }

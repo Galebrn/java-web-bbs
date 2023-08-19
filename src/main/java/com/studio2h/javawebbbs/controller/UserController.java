@@ -1,12 +1,12 @@
 package com.studio2h.javawebbbs.controller;
 
 import com.studio2h.javawebbbs.pojo.post.Post;
-import com.studio2h.javawebbbs.pojo.post.PostPrivate;
 import com.studio2h.javawebbbs.pojo.request.UserLoginRequest;
+import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
+import com.studio2h.javawebbbs.pojo.response.UserQueryResponse;
 import com.studio2h.javawebbbs.pojo.result.Result;
 import com.studio2h.javawebbbs.pojo.user.User;
-import com.studio2h.javawebbbs.pojo.user.UserFollow;
 import com.studio2h.javawebbbs.service.PostService;
 import com.studio2h.javawebbbs.service.UserService;
 import com.studio2h.javawebbbs.utils.JwtUtils;
@@ -38,7 +38,8 @@ public class UserController {
     public Result userLogin(@RequestBody UserLoginRequest userLoginRequest) {
         log.info("用户登录  loginRequest: {}", userLoginRequest);
 
-        User user = userService.userLogin(userLoginRequest);
+        UserQueryRequest userQueryRequest = new UserQueryRequest(userLoginRequest);
+        User user = userService.getByConditions(userQueryRequest);
 
         if (user != null) {
             Map<String, Object> claims = new HashMap<>();
@@ -57,8 +58,10 @@ public class UserController {
     public Result userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         log.info("新增用户  userInfo: {}", userRegisterRequest);
 
-        if (userService.getUserByName(userRegisterRequest.getUserName()) != null) {
-            return Result.error("该用户名: " + userRegisterRequest.getUserName() + " 已被使用");
+        String userName = userRegisterRequest.getUserName();
+
+        if (userService.getUserByName(userName) != null) {
+            return Result.error("该用户名: " + userName + " 已被使用");
         } else if (!userRegisterRequest.getUserPassword().equals(userRegisterRequest.getRepeatPassword())) {
             return Result.error("两次密码不同");
         } else {
@@ -67,31 +70,74 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{userId}/follow")
+    @GetMapping("/{userId}/followers")
     public Result listFollowers(@PathVariable Integer userId) {
+        if (userService.getUserById(userId) == null) {
+            return Result.error("id为: " + userId + " 的用户不存在");
+        }
+
         log.info("用户关注列表查询  userId: {}", userId);
 
-        List<UserFollow> userFollowList = userService.listFollowers(userId);
+        List<Integer> followersIds = userService.listFollowers(userId);
+        List<UserQueryResponse> userQueryResponses = userService.listByIds(followersIds);
 
-        return Result.success(userFollowList);
+        if (!userQueryResponses.isEmpty()) {
+            return Result.success(userQueryResponses);
+        } else {
+            return Result.error("未查询到用户id为: " + userId + " 的关注列表");
+        }
+    }
+
+    @GetMapping("/{userId}/fans")
+    public Result listFans(@PathVariable Integer userId) {
+        if (userService.getUserById(userId) == null) {
+            return Result.error("id为: " + userId + " 的用户不存在");
+        }
+
+        log.info("用户粉丝列表查询  userId: {}", userId);
+
+        List<Integer> fansIds = userService.listFans(userId);
+        List<UserQueryResponse> userQueryResponses = userService.listByIds(fansIds);
+
+        if (!userQueryResponses.isEmpty()) {
+            return Result.success(userQueryResponses);
+        } else {
+            return Result.error("未查询到用户id为: " + userId + " 的粉丝列表");
+        }
     }
 
     @GetMapping("/{userId}/private")
     public Result listPrivates(@PathVariable Integer userId) {
+        if (userService.getUserById(userId) == null) {
+            return Result.error("id为: " + userId + " 的用户不存在");
+        }
+
         log.info("用户收藏帖子列表查询  userId: {}", userId);
 
-        List<PostPrivate> postPrivateList = postService.listPrivates(userId);
+        List<Integer> privateIds = postService.listPrivates(userId);
+        List<Post> posts = postService.listByIds(privateIds);
 
-        return Result.success(postPrivateList);
+        System.out.println("posts: " + posts);
+
+        if (!posts.isEmpty()) {
+            return Result.success(posts);
+        } else {
+            return Result.error("未查询到用户id为: " + userId + " 的收藏列表");
+        }
     }
 
     @GetMapping("/{userId}")
     public Result getUserInfo(@PathVariable Integer userId) {
+        if (userService.getUserById(userId) == null) {
+            return Result.error("id为: " + userId + " 的用户不存在");
+        }
+
         log.info("获取用户信息  userId: {}", userId);
 
         User user = userService.getUserById(userId);
+        UserQueryResponse userQueryResponse = new UserQueryResponse(user);
 
-        return Result.success(user);
+        return Result.success(userQueryResponse);
     }
 
     @PutMapping("/{userId}/editor")
@@ -104,6 +150,7 @@ public class UserController {
           判断用户名是否存在
          */
         String userName = newUser.getUserName();
+        System.out.println(userName);
         if ((userService.getUserByName(userName) != null)
                 && (!userService.getUserById(userId).getUserName().equals(userName))) {
             return Result.error("该用户名: " + userName + " 已被使用");
@@ -115,13 +162,13 @@ public class UserController {
         /*
           判断电话号码格式
          */
-        if (phoneNum!=null) {
+        if (phoneNum != null) {
             Pattern pattern = Pattern.compile(regexOfPhoneNum);
             Matcher matcher = pattern.matcher(phoneNum);
             if (!matcher.matches()) {
                 return Result.error("该电话号码格式不合法");
             }
-            if (userService.getUserByPhoneNum(phoneNum)!=null) {
+            if (userService.getUserByPhoneNum(phoneNum) != null) {
                 return Result.error("该电话号码: " + phoneNum + " 已被使用");
             }
         }
@@ -129,13 +176,13 @@ public class UserController {
         /*
           判断邮箱格式
          */
-        if (email!=null) {
+        if (email != null) {
             Pattern pattern = Pattern.compile(regexOfEmail);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
                 return Result.error("该邮箱格式不合法");
             }
-            if (userService.getUserByEmail(email)!=null) {
+            if (userService.getUserByEmail(email) != null) {
                 return Result.error("该电子邮箱: " + email + " 已被使用");
             }
         }

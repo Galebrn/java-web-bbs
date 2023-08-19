@@ -3,15 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.studio2h.javawebbbs.mapper.CommentMapper">
-
     <insert id="insertNewComment">
-        insert into comment (comment_id, post_id, author_id, comment_if_visible, create_time, update_time, comment_text)
-        values (#{commentId}, #{postId}, #{authorId}, #{commentIfVisible}, #{createTime}, #{updateTime}, #{commentText})
+        insert into comment (post_id, author_id, comment_status, create_time, update_time, comment_text)
+        values (#{postId}, #{authorId}, #{commentIfVisible}, #{createTime}, #{updateTime}, #{commentText})
     </insert>
-    <update id="removeCommentOrNot">
+    <update id="updateStatus">
         update comment
-        set comment_if_visible = #{ifVisible},
-            update_time        = now()
+        set comment_status = #{status},
+            update_time    = now()
         where post_id = #{id}
     </update>
     <delete id="deleteComment">
@@ -19,14 +18,126 @@
         from comment
         where comment_id = #{id}
     </delete>
-    <select id="listByPostId" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
-        select comment_id, post_id, author_id, comment_if_visible, create_time, update_time, comment_text
+    <select id="getByConditions" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
+        select comment_id, post_id, author_id, comment_status, create_time, update_time, comment_text
         from comment
-        where post_id = #{id}
+        <where>
+            <if test="commentId != null">
+                comment_id = #{commentId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="authorId != null">
+                and aithor_id = #{authorId}
+            </if>
+            <if test="">
+                and comment_status = #{commentStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
     </select>
-    <select id="listByAuthorId" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
-        select comment_id, post_id, author_id, comment_if_visible, create_time, update_time, comment_text
+    <select id="listByConditions" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
+        select comment_id, post_id, author_id, comment_status, create_time, update_time, comment_text
         from comment
-        where author_id = #{id}
+        <where>
+            <if test="commentId != null">
+                comment_id = #{commentId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="authorId != null">
+                and aithor_id = #{authorId}
+            </if>
+            <if test="">
+                and comment_status = #{commentStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+    <select id="countByConditions" resultType="java.lang.Integer">
+        select count(*)
+        from comment
+        <where>
+            <if test="commentId != null">
+                comment_id = #{commentId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="authorId != null">
+                and aithor_id = #{authorId}
+            </if>
+            <if test="">
+                and comment_status = #{commentStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+    <select id="listOderByCreateTime" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
+        select comment_id, post_id, author_id, comment_status, create_time, update_time, comment_text
+        from comment
+        <where>
+            <if test="commentId != null">
+                comment_id = #{commentId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="authorId != null">
+                and aithor_id = #{authorId}
+            </if>
+            <if test="">
+                and comment_status = #{commentStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        order by create_time
+    </select>
+    <select id="listReverseByCreateTime" resultType="com.studio2h.javawebbbs.pojo.post.Comment">
+        select comment_id, post_id, author_id, comment_status, create_time, update_time, comment_text
+        from comment
+        <where>
+            <if test="commentId != null">
+                comment_id = #{commentId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="authorId != null">
+                and aithor_id = #{authorId}
+            </if>
+            <if test="">
+                and comment_status = #{commentStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        order by create_time desc
     </select>
 </mapper>

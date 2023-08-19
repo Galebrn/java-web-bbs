@@ -5,9 +5,9 @@
 <mapper namespace="com.studio2h.javawebbbs.mapper.PostMapper">
 
     <insert id="insertNewPost">
-        insert into post (post_id, post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
+        insert into post (post_title, create_time, update_time, post_text, count_of_comments, count_of_likes,
                           count_of_private, count_of_browsers, category_id, author_id, post_status)
-        values (#{postId}, #{postTitle}, #{createTime}, #{updateTime}, #{postText}, #{countOfComments}, #{countOfLikes},
+        values (#{postTitle}, #{createTime}, #{updateTime}, #{postText}, #{countOfComments}, #{countOfLikes},
                 #{countOfPrivate}, #{countOfBrowsers}, #{categoryId}, #{authorId}, #{postIfVisible})
     </insert>
     <update id="updateStatusById">
@@ -15,6 +15,45 @@
         set post_status = #{status},
             update_time = now()
         where post_id = #{id}
+    </update>
+    <update id="updatePost">
+        update post
+        <set>
+            <if test="postTitle != null and postTitle != ''">
+                post_title = #{postTitle},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="postText != null and postText != ''">
+                post_text = #{postText},
+            </if>
+            <if test="countOfComments != null">
+                count_of_comments = #{countOfComments},
+            </if>
+            <if test="countOfLikes != null">
+                count_of_likes = #{countOfLikes},
+            </if>
+            <if test="countOfPrivate != null">
+                count_of_private = #{countOfPrivate},
+            </if>
+            <if test="countOfBrowsers != null">
+                count_of_browsers = #{countOfBrowsers},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="authorId != null">
+                author_id = #{authorId},
+            </if>
+            <if test="postStatus != null">
+                post_status = #{postStatus}
+            </if>
+        </set>
+        where post_id = #{postId}
     </update>
     <delete id="deletePost">
         delete

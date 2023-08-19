@@ -31,15 +31,15 @@ public interface UserFollowMapper {
      * @param id 用户id
      * @return 关注者id表
      */
-    List<Integer> listFollowedId(Integer id);
+    List<Integer> listFollowersIds(Integer id);
 
     /**
-     * 查找userId为id的用户的被关注者id表
+     * 查找userId为id的用户的粉丝id表
      *
      * @param id 用户id
      * @return 被关注者id表
      */
-    List<Integer> listBeFollowedId(Integer id);
+    List<Integer> listFansIds(Integer id);
 
     /**
      * 新增关注项

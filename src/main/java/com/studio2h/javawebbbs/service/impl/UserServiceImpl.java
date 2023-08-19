@@ -2,17 +2,17 @@ package com.studio2h.javawebbbs.service.impl;
 
 import com.studio2h.javawebbbs.mapper.UserFollowMapper;
 import com.studio2h.javawebbbs.mapper.UserMapper;
-import com.studio2h.javawebbbs.pojo.request.UserLoginRequest;
 import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
+import com.studio2h.javawebbbs.pojo.response.UserQueryResponse;
 import com.studio2h.javawebbbs.pojo.user.User;
-import com.studio2h.javawebbbs.pojo.user.UserFollow;
 import com.studio2h.javawebbbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author Galebrn
@@ -26,16 +26,8 @@ public class UserServiceImpl implements UserService {
     private UserFollowMapper userFollowMapper;
 
     @Override
-    public User userLogin(UserLoginRequest userLoginRequest) {
-        UserQueryRequest userQueryRequest = new UserQueryRequest();
-        userQueryRequest.setUserName(userLoginRequest.getUserName());
-        userQueryRequest.setUserPassword(userLoginRequest.getUserPassword());
+    public User getByConditions(UserQueryRequest userQueryRequest) {
         return userMapper.getByConditions(userQueryRequest);
-    }
-
-    @Override
-    public List<UserFollow> listFollowers(Integer userId) {
-        return userFollowMapper.listById(userId);
     }
 
     @Override
@@ -54,26 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerNewUser(UserRegisterRequest userRegisterRequest) {
-        User newUser = new User(null,
-                userRegisterRequest.getUserName(),
-                userRegisterRequest.getUserPassword(),
-                userRegisterRequest.getUserAvatarPath(),
-                userRegisterRequest.getUserSex(),
-                null,
-                null,
-                0,
-                0,
-                null,
-                null,
-                0,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                1,
-                0,
-                0,
-                0,
-                0,
-                0);
+        User newUser = new User(userRegisterRequest);
 
         userMapper.insertUser(newUser);
     }
@@ -95,5 +68,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User newUser) {
         userMapper.updateUser(newUser);
+    }
+
+    @Override
+    public List<Integer> listFollowers(Integer userId) {
+        return userFollowMapper.listFollowersIds(userId);
+    }
+
+    @Override
+    public List<UserQueryResponse> listByIds(List<Integer> ids) {
+        List<UserQueryResponse> userQueryResponses = new ArrayList<>();
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+
+        for (Integer id : ids) {
+            userQueryRequest.setUserId(id);
+            userQueryResponses.add(userMapper.getByConditionsReturnUqr(userQueryRequest));
+        }
+
+        return userQueryResponses;
+    }
+
+    @Override
+    public List<Integer> listFans(Integer userId) {
+        return userFollowMapper.listFansIds(userId);
     }
 }

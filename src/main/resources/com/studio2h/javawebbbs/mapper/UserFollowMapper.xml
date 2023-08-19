@@ -18,12 +18,12 @@
         from user_follow
         where user_id = #{id}
     </select>
-    <select id="listFollowedId" resultType="java.lang.Integer">
+    <select id="listFollowersIds" resultType="java.lang.Integer">
         select followed_user_id
         from user_follow
         where user_id = #{id}
     </select>
-    <select id="listBeFollowedId" resultType="java.lang.Integer">
+    <select id="listFansIds" resultType="java.lang.Integer">
         select user_id
         from user_follow
         where followed_user_id = #{id}

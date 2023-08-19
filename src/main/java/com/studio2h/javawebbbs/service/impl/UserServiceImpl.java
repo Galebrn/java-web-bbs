@@ -6,6 +6,7 @@ import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
 import com.studio2h.javawebbbs.pojo.response.UserQueryResponse;
 import com.studio2h.javawebbbs.pojo.user.User;
+import com.studio2h.javawebbbs.pojo.user.UserFollow;
 import com.studio2h.javawebbbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,5 +92,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Integer> listFans(Integer userId) {
         return userFollowMapper.listFansIds(userId);
+    }
+
+    @Override
+    public UserFollow getFollowByIds(Integer userId, Integer followedUserId) {
+        return userFollowMapper.getByIds(userId, followedUserId);
+    }
+
+    @Override
+    public void insertNewFollow(UserFollow userFollow) {
+        userFollowMapper.insertNewFollower(userFollow);
+
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+
+        userQueryRequest.setUserId(userFollow.getUserId());
+        User user = userMapper.getByConditions(userQueryRequest);
+        user.setCountOfFollow(user.getCountOfFollow() + 1);
+        userMapper.updateUser(user);
+
+        userQueryRequest.setUserId(userFollow.getFollowedUserId());
+        User follower = userMapper.getByConditions(userQueryRequest);
+        follower.setCountOfBeFollow(follower.getCountOfBeFollow() + 1);
+        userMapper.updateUser(follower);
+    }
+
+    @Override
+    public void deleteFollow(UserFollow deleteUserFollow) {
+        userFollowMapper.deleteFollower(deleteUserFollow);
+
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+
+        userQueryRequest.setUserId(deleteUserFollow.getUserId());
+        User user = userMapper.getByConditions(userQueryRequest);
+        user.setCountOfFollow(user.getCountOfFollow() - 1);
+        userMapper.updateUser(user);
+
+        userQueryRequest.setUserId(deleteUserFollow.getFollowedUserId());
+        User follower = userMapper.getByConditions(userQueryRequest);
+        follower.setCountOfBeFollow(follower.getCountOfBeFollow() - 1);
+        userMapper.updateUser(follower);
     }
 }

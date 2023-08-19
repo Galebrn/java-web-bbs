@@ -32,4 +32,10 @@
         select user_id, followed_user_id
         from user_follow
     </select>
+    <select id="getByIds" resultType="com.studio2h.javawebbbs.pojo.user.UserFollow">
+        select user_id, followed_user_id
+        from user_follow
+        where user_id = #{userId}
+          and followed_user_id = #{followedUserId}
+    </select>
 </mapper>

@@ -54,4 +54,6 @@ public interface UserFollowMapper {
      * @param userFollow 关注项
      */
     void deleteFollower(UserFollow userFollow);
+
+    UserFollow getByIds(Integer userId, Integer followedUserId);
 }

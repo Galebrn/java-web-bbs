@@ -4,6 +4,7 @@ import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
 import com.studio2h.javawebbbs.pojo.response.UserQueryResponse;
 import com.studio2h.javawebbbs.pojo.user.User;
+import com.studio2h.javawebbbs.pojo.user.UserFollow;
 
 import java.util.List;
 
@@ -33,4 +34,10 @@ public interface UserService {
     List<UserQueryResponse> listByIds(List<Integer> ids);
 
     List<Integer> listFans(Integer userId);
+
+    UserFollow getFollowByIds(Integer userId, Integer followedUserId);
+
+    void insertNewFollow(UserFollow userFollow);
+
+    void deleteFollow(UserFollow deleteUserFollow);
 }

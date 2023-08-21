@@ -29,4 +29,10 @@
         from post_private
         where post_id = #{id}
     </select>
+    <select id="getByIds" resultType="com.studio2h.javawebbbs.pojo.post.PostPrivate">
+        select user_id, post_id
+        from post_private
+        where post_id = #{postId}
+          and user_id = #{userId}
+    </select>
 </mapper>

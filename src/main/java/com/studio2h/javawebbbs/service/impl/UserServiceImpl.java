@@ -1,5 +1,6 @@
 package com.studio2h.javawebbbs.service.impl;
 
+import com.studio2h.javawebbbs.constant.StatusConstant;
 import com.studio2h.javawebbbs.mapper.UserFollowMapper;
 import com.studio2h.javawebbbs.mapper.UserMapper;
 import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
@@ -11,6 +12,7 @@ import com.studio2h.javawebbbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,19 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private UserFollowMapper userFollowMapper;
+
+    @Override
+    public Integer getStatusById(Integer userId) {
+        UserQueryRequest userQueryRequest = new UserQueryRequest();
+        userQueryRequest.setUserId(userId);
+        User user = userMapper.getByConditions(userQueryRequest);
+
+        if (user == null) {
+            return StatusConstant.ABSENT;
+        } else {
+            return user.getUserStatus();
+        }
+    }
 
     @Override
     public User getByConditions(UserQueryRequest userQueryRequest) {
@@ -68,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User newUser) {
+        newUser.setUpdateTime(LocalDateTime.now());
         userMapper.updateUser(newUser);
     }
 
@@ -108,11 +124,13 @@ public class UserServiceImpl implements UserService {
         userQueryRequest.setUserId(userFollow.getUserId());
         User user = userMapper.getByConditions(userQueryRequest);
         user.setCountOfFollow(user.getCountOfFollow() + 1);
+        user.setUpdateTime(LocalDateTime.now());
         userMapper.updateUser(user);
 
         userQueryRequest.setUserId(userFollow.getFollowedUserId());
         User follower = userMapper.getByConditions(userQueryRequest);
         follower.setCountOfBeFollow(follower.getCountOfBeFollow() + 1);
+        follower.setUpdateTime(LocalDateTime.now());
         userMapper.updateUser(follower);
     }
 
@@ -125,11 +143,13 @@ public class UserServiceImpl implements UserService {
         userQueryRequest.setUserId(deleteUserFollow.getUserId());
         User user = userMapper.getByConditions(userQueryRequest);
         user.setCountOfFollow(user.getCountOfFollow() - 1);
+        user.setUpdateTime(LocalDateTime.now());
         userMapper.updateUser(user);
 
         userQueryRequest.setUserId(deleteUserFollow.getFollowedUserId());
         User follower = userMapper.getByConditions(userQueryRequest);
         follower.setCountOfBeFollow(follower.getCountOfBeFollow() - 1);
+        follower.setUpdateTime(LocalDateTime.now());
         userMapper.updateUser(follower);
     }
 }

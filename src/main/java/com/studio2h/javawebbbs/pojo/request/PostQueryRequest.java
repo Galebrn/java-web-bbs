@@ -1,5 +1,6 @@
 package com.studio2h.javawebbbs.pojo.request;
 
+import com.studio2h.javawebbbs.pojo.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,24 @@ public class PostQueryRequest {
     private Integer categoryId;
     private Integer authorId;
     private Integer postStatus;
-    private Integer createTime;
-    private Integer updateTime;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+
+    public PostQueryRequest(Post post) {
+        this.postId = post.getPostId();
+        this.postTitle = post.getPostTitle();
+        this.countOfComments = post.getCountOfComments();
+        this.countOfLikes = post.getCountOfLikes();
+        this.countOfPrivate = post.getCountOfPrivate();
+        this.countOfBrowsers = post.getCountOfBrowsers();
+        this.categoryId = post.getCategoryId();
+        this.authorId = post.getAuthorId();
+        this.postStatus = post.getPostStatus();
+        this.createTime = post.getCreateTime();
+        this.updateTime = post.getUpdateTime();
+        this.startCreateTime = null;
+        this.endCreateTime = null;
+        this.startUpdateTime = null;
+        this.endUpdateTime = null;
+    }
 }

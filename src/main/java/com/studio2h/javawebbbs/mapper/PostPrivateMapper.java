@@ -47,4 +47,6 @@ public interface PostPrivateMapper {
      * @param postPrivate 收藏项
      */
     void deletePrivate(PostPrivate postPrivate);
+
+    PostPrivate getByIds(Integer userId, Integer postId);
 }

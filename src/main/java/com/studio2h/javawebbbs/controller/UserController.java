@@ -2,6 +2,7 @@ package com.studio2h.javawebbbs.controller;
 
 import com.studio2h.javawebbbs.constant.StatusConstant;
 import com.studio2h.javawebbbs.pojo.post.Post;
+import com.studio2h.javawebbbs.pojo.post.PostPrivate;
 import com.studio2h.javawebbbs.pojo.request.UserLoginRequest;
 import com.studio2h.javawebbbs.pojo.request.UserQueryRequest;
 import com.studio2h.javawebbbs.pojo.request.UserRegisterRequest;
@@ -35,16 +36,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private PostService postService;
-
-    public boolean ifUserExist(Integer userId) {
-        User user = userService.getUserById(userId);
-        return user != null && !user.getUserStatus().equals(StatusConstant.DISABLE);
-    }
-
-    public boolean ifUserBaned(Integer userId) {
-        User user = userService.getUserById(userId);
-        return user != null && user.getUserStatus().equals(StatusConstant.BANED);
-    }
 
     @PostMapping("/login")
     public Result userLogin(@RequestBody UserLoginRequest userLoginRequest) {
@@ -84,9 +75,13 @@ public class UserController {
 
     @GetMapping("/{userId}/followers")
     public Result listFollowers(@PathVariable Integer userId) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer status = userService.getStatusById(userId);
+        if (status.equals(StatusConstant.ABSENT) || status.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (status.equals(StatusConstant.BANED)) {
             return Result.error("id为: " + userId + " 的用户封禁中");
         }
 
@@ -104,9 +99,13 @@ public class UserController {
 
     @GetMapping("/{userId}/fans")
     public Result listFans(@PathVariable Integer userId) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer status = userService.getStatusById(userId);
+        if (status.equals(StatusConstant.ABSENT) || status.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (status.equals(StatusConstant.BANED)) {
             return Result.error("id为: " + userId + " 的用户封禁中");
         }
 
@@ -124,9 +123,13 @@ public class UserController {
 
     @GetMapping("/{userId}/private")
     public Result listPrivates(@PathVariable Integer userId) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer status = userService.getStatusById(userId);
+        if (status.equals(StatusConstant.ABSENT) || status.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (status.equals(StatusConstant.BANED)) {
             return Result.error("id为: " + userId + " 的用户封禁中");
         }
 
@@ -146,9 +149,13 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public Result getUserInfo(@PathVariable Integer userId) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer status = userService.getStatusById(userId);
+        if (status.equals(StatusConstant.ABSENT) || status.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (status.equals(StatusConstant.BANED)) {
             return Result.error("id为: " + userId + " 的用户封禁中");
         }
 
@@ -162,8 +169,12 @@ public class UserController {
 
     @GetMapping("/{userId}/{userName}")
     public Result getUserInfo(@PathVariable Integer userId, @PathVariable String userName) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer status = userService.getStatusById(userId);
+        if (status.equals(StatusConstant.ABSENT) || status.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
         }
 
         User user = userService.getUserById(userId);
@@ -179,10 +190,14 @@ public class UserController {
 
     @PutMapping("/{userId}/editor")
     public Result updateUserInfo(@PathVariable Integer userId, @RequestBody User newUser) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
-            return Result.error("id为: " + userId + " 的用户封禁中，不提供信息修改功能");
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer status = userService.getStatusById(userId);
+        if (status.equals(StatusConstant.ABSENT) || status.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (status.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + userId + " 的用户封禁中");
         }
 
         String regexOfPhoneNum = "^\\d{11}$";
@@ -236,76 +251,121 @@ public class UserController {
 
     @PostMapping("/{userId}/follow/editor")
     public Result insertNewFollow(@PathVariable Integer userId, @RequestBody User followedUser) {
+        /*
+          判断url中id对应用户的状态
+         */
         //noinspection DuplicatedCode
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
-            return Result.error("id为: " + userId + " 的用户封禁中，不提供信息修改功能");
+        Integer userStatus = userService.getStatusById(userId);
+        if (userStatus.equals(StatusConstant.ABSENT) || userStatus.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (userStatus.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + userId + " 的用户封禁中");
         }
 
+        /*
+          判断关注者的状态
+         */
         Integer followedUserId = followedUser.getUserId();
-
-        UserQueryRequest userQueryRequest = new UserQueryRequest();
-        userQueryRequest.setUserId(followedUserId);
-        if (!ifUserExist(followedUserId)) {
-            return Result.error("id为: " + followedUserId + " 的用户不存在");
-        } else if (ifUserBaned(followedUser.getUserId())) {
-            return Result.error("id为: " + followedUserId + " 的用户封禁中，无法关注");
+        Integer followerStatus = userService.getStatusById(followedUserId);
+        if (followerStatus.equals(StatusConstant.ABSENT) || followerStatus.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + followedUserId + " 的用户不存在或已注销");
+        } else if (followerStatus.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + followedUserId + " 的用户封禁中");
         }
 
+        /*
+          判断是否自己关注自己
+         */
         if (userId.equals(followedUserId)) {
             return Result.error("无法关注自己");
         }
 
+        /*
+          判断是否重复关注
+         */
         UserFollow userFollow = userService.getFollowByIds(userId, followedUserId);
         if (userFollow != null) {
             return Result.error("无法重复关注id: " + followedUserId + " 的用户");
         }
 
-        UserFollow newUserFollow = new UserFollow();
-        newUserFollow.setUserId(userId);
-        newUserFollow.setFollowedUserId(followedUserId);
-        userService.insertNewFollow(newUserFollow);
+        UserFollow newFollow = new UserFollow(userId, followedUserId);
+        userService.insertNewFollow(newFollow);
 
         return Result.success();
     }
 
     @PostMapping("/{userId}/private/editor")
     public Result insertNewPrivate(@PathVariable Integer userId, @RequestBody Post post) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
-            return Result.error("id为: " + userId + " 的用户封禁中，不提供信息修改功能");
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer userStatus = userService.getStatusById(userId);
+        if (userStatus.equals(StatusConstant.ABSENT) || userStatus.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (userStatus.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + userId + " 的用户封禁中");
         }
+
+        /*
+          判断帖子状态
+         */
+        Integer privatePostId = post.getPostId();
+        Integer postStatus = postService.getStatusById(privatePostId);
+        if (postStatus.equals(StatusConstant.ABSENT) || postStatus.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的帖子不存在或已删除");
+        } else if (postStatus.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + userId + " 的用帖子封禁中");
+        }
+
+        PostPrivate postPrivate = postService.getPrivateByIds(userId, privatePostId);
+        if (postPrivate != null) {
+            return Result.error("无法重复收藏id: " + privatePostId + " 的帖子");
+        }
+
+        PostPrivate newPrivate = new PostPrivate(userId, privatePostId);
+        postService.insertNewPrivate(newPrivate);
 
         return Result.success();
     }
 
     @DeleteMapping("/{userId}/follow/editor")
     public Result deleteFollow(@PathVariable Integer userId, @RequestBody User followedUser) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
-            return Result.error("id为: " + userId + " 的用户封禁中，不提供信息修改功能");
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer userStatus = userService.getStatusById(userId);
+
+        if (userStatus.equals(StatusConstant.ABSENT) || userStatus.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (userStatus.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + userId + " 的用户封禁中");
         }
 
+        /*
+          判断关注者的状态
+         */
         Integer followedUserId = followedUser.getUserId();
+        Integer followerStatus = userService.getStatusById(followedUserId);
+        if (followerStatus.equals(StatusConstant.ABSENT)) {
+            return Result.error("id为: " + followedUserId + " 的用户不存在");
+        }
 
-        UserQueryRequest userQueryRequest = new UserQueryRequest();
-        userQueryRequest.setUserId(followedUserId);
-
+        /*
+          判断是否取消关注自己
+         */
         if (userId.equals(followedUserId)) {
             return Result.error("无法对自己取消关注");
         }
 
-        UserFollow userFollow = userService.getFollowByIds(userId,followedUserId);
+        /*
+          判断是否取消不存在的关注
+         */
+        UserFollow userFollow = userService.getFollowByIds(userId, followedUserId);
         if (userFollow == null) {
-            return Result.error("id: "+followedUserId+" 的用户不在关注列表中，无法取消关注");
+            return Result.error("id: " + followedUserId + " 的用户不在关注列表中，无法取消关注");
         }
 
-        UserFollow deleteUserFollow = new UserFollow();
-        deleteUserFollow.setUserId(userId);
-        deleteUserFollow.setFollowedUserId(followedUserId);
+        UserFollow deleteUserFollow = new UserFollow(userId, followedUserId);
         userService.deleteFollow(deleteUserFollow);
 
         return Result.success();
@@ -313,11 +373,32 @@ public class UserController {
 
     @DeleteMapping("/{userId}/private/editor")
     public Result deletePrivate(@PathVariable Integer userId, @RequestBody Post post) {
-        if (!ifUserExist(userId)) {
-            return Result.error("id为: " + userId + " 的用户不存在");
-        } else if (ifUserBaned(userId)) {
-            return Result.error("id为: " + userId + " 的用户封禁中，不提供信息修改功能");
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer userStatus = userService.getStatusById(userId);
+        if (userStatus.equals(StatusConstant.ABSENT) || userStatus.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (userStatus.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + userId + " 的用户封禁中");
         }
+
+        /*
+          判断帖子状态
+         */
+        Integer privatePostId = post.getPostId();
+        Integer postStatus = postService.getStatusById(privatePostId);
+        if (postStatus.equals(StatusConstant.ABSENT)) {
+            return Result.error("id为: " + userId + " 的帖子不存在");
+        }
+
+        PostPrivate postPrivate = postService.getPrivateByIds(userId, privatePostId);
+        if (postPrivate == null) {
+            return Result.error("id: " + privatePostId + " 的帖子不在用户收藏列表中，无法取消收藏");
+        }
+
+        PostPrivate newPrivate = new PostPrivate(userId,privatePostId);
+        postService.deletePrivate(newPrivate);
 
         return Result.success();
     }

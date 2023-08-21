@@ -14,6 +14,7 @@ import java.util.List;
 
 
 public interface UserService {
+    Integer getStatusById(Integer userId);
 
     User getByConditions(UserQueryRequest userQueryRequest);
 

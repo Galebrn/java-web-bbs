@@ -44,12 +44,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Integer> listPrivates(Integer userId) {
+    public List<Integer> listPrivatesIds(Integer userId) {
         return postPrivateMapper.listPrivatePostIds(userId);
     }
 
     @Override
-    public List<Post> listByIds(List<Integer> privateIds) {
+    public List<Post> listPrivatePostsByIds(List<Integer> privateIds) {
         List<Post> posts = new ArrayList<>();
         PostQueryRequest postQueryRequest = new PostQueryRequest();
 
@@ -101,5 +101,12 @@ public class PostServiceImpl implements PostService {
         post.setCountOfPrivate(post.getCountOfPrivate() - 1);
         post.setUpdateTime(LocalDateTime.now());
         postMapper.updatePost(post);
+    }
+
+    @Override
+    public List<Post> listPostsById(Integer userId) {
+        PostQueryRequest postQueryRequest = new PostQueryRequest();
+        postQueryRequest.setAuthorId(userId);
+        return postMapper.listByConditions(postQueryRequest);
     }
 }

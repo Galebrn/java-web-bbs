@@ -135,8 +135,8 @@ public class UserController {
 
         log.info("用户收藏帖子列表查询  userId: {}", userId);
 
-        List<Integer> privateIds = postService.listPrivates(userId);
-        List<Post> posts = postService.listByIds(privateIds);
+        List<Integer> privateIds = postService.listPrivatesIds(userId);
+        List<Post> posts = postService.listPrivatePostsByIds(privateIds);
 
         System.out.println("posts: " + posts);
 
@@ -397,9 +397,32 @@ public class UserController {
             return Result.error("id: " + privatePostId + " 的帖子不在用户收藏列表中，无法取消收藏");
         }
 
-        PostPrivate newPrivate = new PostPrivate(userId,privatePostId);
+        PostPrivate newPrivate = new PostPrivate(userId, privatePostId);
         postService.deletePrivate(newPrivate);
 
         return Result.success();
+    }
+
+    @GetMapping("/{userId}/posts")
+    public Result listPosts(@PathVariable Integer userId) {
+        /*
+          判断url中id对应用户的状态
+         */
+        Integer status = userService.getStatusById(userId);
+        if (status.equals(StatusConstant.ABSENT) || status.equals(StatusConstant.DISABLE)) {
+            return Result.error("id为: " + userId + " 的用户不存在或已注销");
+        } else if (status.equals(StatusConstant.BANED)) {
+            return Result.error("id为: " + userId + " 的用户封禁中");
+        }
+
+        log.info("用户关注列表查询  userId: {}", userId);
+
+        List<Post> posts = postService.listPostsById(userId);
+
+        if (!posts.isEmpty()) {
+            return Result.success(posts);
+        } else {
+            return Result.error("未查询到用户id为: " + userId + " 的帖子");
+        }
     }
 }

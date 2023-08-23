@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studio2h.javawebbbs.mapper.CicMapper">
+    <insert id="insertNewCic">
+        insert into comment_in_comment (author_id, be_comment_id, comment_id, cic_text, create_time, update_time,
+                                        cic_status)
+        values (#{authorId}, #{beCommentId}, #{commentId}, #{cicText}, #{createTime}, #{updateTime}, #{cicStatus})
+    </insert>
+    <update id="updateStatus">
+        update comment_in_comment
+        set cic_status = #{status}
+        where cic_id = #{cicId}
+    </update>
+
+    <select id="getByConditions" resultType="com.studio2h.javawebbbs.pojo.post.CommentInComment">
+        select cic_id, author_id, be_comment_id, comment_id, cic_text, create_time, update_time, cic_status
+        from comment_in_comment
+        <where>
+            <if test="">
+                cic_id = #{cicId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="beCommentId != null">
+                and be_comment_id = #{beCommentId}
+            </if>
+            <if test="commentId != null">
+                and comment_id = #{commentId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="cicStatus != null">
+                and cic_status = #{cicStatus}
+            </if>
+        </where>
+    </select>
+    <select id="listByConditions" resultType="com.studio2h.javawebbbs.pojo.post.CommentInComment">
+        select cic_id, author_id, be_comment_id, comment_id, cic_text, create_time, update_time, cic_status
+        from comment_in_comment
+        <where>
+            <if test="">
+                cic_id = #{cicId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="beCommentId != null">
+                and be_comment_id = #{beCommentId}
+            </if>
+            <if test="commentId != null">
+                and comment_id = #{commentId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="cicStatus != null">
+                and cic_status = #{cicStatus}
+            </if>
+        </where>
+    </select>
+    <select id="countByConditions" resultType="java.lang.Integer">
+        select count(*)
+        from comment_in_comment
+        <where>
+            <if test="">
+                cic_id = #{cicId}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="beCommentId != null">
+                and be_comment_id = #{beCommentId}
+            </if>
+            <if test="commentId != null">
+                and comment_id = #{commentId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="cicStatus != null">
+                and cic_status = #{cicStatus}
+            </if>
+        </where>
+    </select>
+</mapper>
